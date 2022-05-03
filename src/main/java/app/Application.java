@@ -6,12 +6,13 @@ import io.github.humbleui.jwm.skija.EventFrameSkija;
 import io.github.humbleui.skija.Canvas;
 import io.github.humbleui.skija.Surface;
 import misc.CoordinateSystem2i;
+import panels.PanelInput;
+import panels.PanelOutput;
 
 import java.io.File;
 import java.util.function.Consumer;
 
-import static app.Colors.APP_BACKGROUND_COLOR;
-import static app.Colors.PANEL_BACKGROUND_COLOR;
+import static app.Colors.*;
 
 /**
  * Класс окна приложения
@@ -22,16 +23,18 @@ public class Application implements Consumer<Event> {
      */
     private final Window window;
     /**
-     * отступы панелей
+     * отступ приложения
      */
-    private static final int PANEL_PADDING = 5;
+    public static final int PANEL_PADDING = 5;
     /**
      * радиус скругления элементов
      */
     public static final int C_RAD_IN_PX = 4;
     /**
-     * Первый заголовок
+     * панель курсора мыши
      */
+    private final PanelInput panelInput;
+    private final PanelOutput panelOutput;
     private final Label label;
 
 
@@ -42,22 +45,31 @@ public class Application implements Consumer<Event> {
         // создаём окно
         window = App.makeWindow();
 
-        // создаём первый заголовок
         label = new Label(window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING,
-                1, 10, 0, 0, 1, 1, "Ввод данных", true, true);
+                1, 5, 0, 0, 1, 1, "Ввод массива и получение данных", true, true);
 
+        // создаём панель управления
+        panelInput = new PanelInput(
+                window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 5, 0, 1,
+                1, 4
+        );
+        panelOutput = new PanelOutput(
+                window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 5, 1, 1,
+                1, 4
+        );
 
         // задаём обработчиком событий текущий объект
         window.setEventListener(this);
         // задаём заголовок
-        window.setTitle("Java 2D");
+        window.setTitle("Методы сортировки");
         // задаём размер окна
         window.maximize();
-
+        // задаём иконку
         switch (Platform.CURRENT) {
             case WINDOWS -> window.setIcon(new File("src/main/resources/windows.ico"));
             case MACOS -> window.setIcon(new File("src/main/resources/macos.icns"));
         }
+
 
         // названия слоёв, которые будем перебирать
         String[] layerNames = new String[]{
@@ -99,7 +111,8 @@ public class Application implements Consumer<Event> {
             window.close();
         } else if (e instanceof EventFrameSkija ee) {
             Surface s = ee.getSurface();
-            paint(s.getCanvas(), new CoordinateSystem2i(s.getWidth(), s.getHeight()));
+            paint(s.getCanvas(), new CoordinateSystem2i(0, 0, s.getWidth(), s.getHeight())
+            );
         }
     }
 
@@ -114,9 +127,10 @@ public class Application implements Consumer<Event> {
         canvas.save();
         // очищаем канвас
         canvas.clear(APP_BACKGROUND_COLOR);
-        // рисуем заголовок
+        // рисуем панели
+        panelInput.paint(canvas, windowCS);
+        panelOutput.paint(canvas, windowCS);
         label.paint(canvas, windowCS);
-        // восстанавливаем состояние канваса
         canvas.restore();
     }
 }
