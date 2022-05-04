@@ -29,7 +29,7 @@ public class Application implements Consumer<Event> {
     /**
      * радиус скругления элементов
      */
-    public static final int C_RAD_IN_PX = 4;
+    public static final int C_RAD_IN_PX = 10;
     /**
      * панель курсора мыши
      */
@@ -45,17 +45,17 @@ public class Application implements Consumer<Event> {
         // создаём окно
         window = App.makeWindow();
 
-        label = new Label(window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING,
-                1, 5, 0, 0, 1, 1, "Ввод массива и получение данных", true, true);
+        label = new Label(window, true, LABEL_BACKGROUND_COLOR, PANEL_PADDING,
+                1, 7, 0, 0, 1, 1, "Ввод массива и получение данных", true, true);
 
         // создаём панель управления
         panelInput = new PanelInput(
-                window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 5, 0, 1,
-                1, 4
+                window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 7, 0, 1,
+                1, 6
         );
         panelOutput = new PanelOutput(
-                window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 5, 1, 1,
-                1, 4
+                window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 7, 1, 1,
+                1, 6
         );
 
         // задаём обработчиком событий текущий объект
@@ -114,6 +114,9 @@ public class Application implements Consumer<Event> {
             paint(s.getCanvas(), new CoordinateSystem2i(0, 0, s.getWidth(), s.getHeight())
             );
         }
+
+        panelInput.accept(e);
+
     }
 
     /**
