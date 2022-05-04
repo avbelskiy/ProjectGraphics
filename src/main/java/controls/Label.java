@@ -9,7 +9,6 @@ import misc.CoordinateSystem2i;
 import panels.GridPanel;
 
 import static app.Colors.LABEL_TEXT_COLOR;
-import static app.Fonts.FONT12;
 import static app.Fonts.FONT36;
 
 /**

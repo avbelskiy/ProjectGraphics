@@ -1,5 +1,6 @@
 package app;
 
+import controls.InputFactory;
 import controls.Label;
 import io.github.humbleui.jwm.*;
 import io.github.humbleui.jwm.skija.EventFrameSkija;
@@ -7,6 +8,7 @@ import io.github.humbleui.skija.Canvas;
 import io.github.humbleui.skija.Surface;
 import misc.CoordinateSystem2i;
 import panels.PanelInput;
+import panels.PanelLog;
 import panels.PanelOutput;
 
 import java.io.File;
@@ -35,6 +37,7 @@ public class Application implements Consumer<Event> {
      */
     private final PanelInput panelInput;
     private final PanelOutput panelOutput;
+    private final PanelLog panelLog;
     private final Label label;
 
 
@@ -51,11 +54,16 @@ public class Application implements Consumer<Event> {
         // создаём панель управления
         panelInput = new PanelInput(
                 window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 7, 0, 1,
-                1, 6
+                1, 5
         );
         panelOutput = new PanelOutput(
                 window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 7, 1, 1,
                 1, 6
+        );
+
+        panelLog = new PanelLog(
+                window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 7, 0, 6,
+                1, 1
         );
 
         // задаём обработчиком событий текущий объект
@@ -133,6 +141,7 @@ public class Application implements Consumer<Event> {
         // рисуем панели
         panelInput.paint(canvas, windowCS);
         panelOutput.paint(canvas, windowCS);
+        panelLog.paint(canvas, windowCS);
         label.paint(canvas, windowCS);
         canvas.restore();
     }

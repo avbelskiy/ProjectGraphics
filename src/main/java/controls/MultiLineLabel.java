@@ -8,7 +8,7 @@ import misc.CoordinateSystem2i;
 import panels.GridPanel;
 
 import static app.Colors.MULTILINE_TEXT_COLOR;
-import static app.Fonts.FONT12;
+import static app.Fonts.FONT24;
 
 /**
  * Многострочный заголовок
@@ -74,7 +74,7 @@ public class MultiLineLabel extends GridPanel {
         // сохраняем области рисования
         canvas.save();
         // высота текста
-        int capHeight = (int) FONT12.getMetrics().getCapHeight();
+        int capHeight = (int) FONT24.getMetrics().getCapHeight();
         // говорим, что первая y координата - это высота текста
         int y = capHeight;
         // начальное значение для последней сохранённой высоты
@@ -86,7 +86,7 @@ public class MultiLineLabel extends GridPanel {
         // перебираем строки текста
         for (String lineText : text.split("\n")) {
             // создаём линию как объект рисования
-            try (TextLine line = TextLine.make(lineText, FONT12)) {
+            try (TextLine line = TextLine.make(lineText, FONT24)) {
                 // последняя сохранённая ширина будет равна максимальной ширине строки
                 lastTextWidth = Math.max((int) line.getWidth() + 2 * padding, lastTextWidth);
             }
@@ -107,7 +107,7 @@ public class MultiLineLabel extends GridPanel {
             // перебираем строки текста
             for (String lineText : text.split("\n")) {
                 // создаём линию как объект рисования
-                try (TextLine line = TextLine.make(lineText, FONT12)) {
+                try (TextLine line = TextLine.make(lineText, FONT24)) {
                     // рисуем линию
                     canvas.save();
 
