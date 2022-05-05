@@ -7,7 +7,7 @@ import io.github.humbleui.skija.TextLine;
 import misc.CoordinateSystem2i;
 import panels.GridPanel;
 
-import static app.Colors.MULTILINE_TEXT_COLOR;
+import static app.Colors.LABEL_TEXT_COLOR;
 import static app.Fonts.FONT24;
 
 /**
@@ -103,7 +103,7 @@ public class MultiLineLabel extends GridPanel {
             canvas.translate(0, (windowCS.getSize().y - lastTextHeight) / 2.0f);
 
 
-        try (Paint fg = new Paint().setColor(MULTILINE_TEXT_COLOR)) {
+        try (Paint fg = new Paint().setColor(LABEL_TEXT_COLOR)) {
             // перебираем строки текста
             for (String lineText : text.split("\n")) {
                 // создаём линию как объект рисования

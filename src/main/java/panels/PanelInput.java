@@ -8,6 +8,7 @@ import io.github.humbleui.jwm.*;
 import io.github.humbleui.skija.Canvas;
 import misc.CoordinateSystem2i;
 import misc.Vector2i;
+import controls.MultiLineLabel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class PanelInput extends GridPanel {
      * Заголовки
      */
     public List<Label> labels;
+    public List<MultiLineLabel> multiLineLabels;
     /**
      * Поля ввода
      */
@@ -57,29 +59,72 @@ public class PanelInput extends GridPanel {
         // создаём списки
         inputs = new ArrayList<>();
         labels = new ArrayList<>();
+        multiLineLabels = new ArrayList<>();
         buttons = new ArrayList<>();
 
         // добавление вручную
+
+        MultiLineLabel nLabel = new MultiLineLabel(window, false, backgroundColor, PANEL_PADDING,
+                6, 7, 0, 1, 2, 1, "Длина массива:", true,true);
+        multiLineLabels.add(nLabel);
+
+        Input nField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
+                6, 7, 2, 1, 2, 1, "1", true,
+                FIELD_TEXT_COLOR, true);
+        inputs.add(nField);
+
+        Button addArr = new Button(
+                window, true, backgroundColor, PANEL_PADDING,
+                6, 7, 4, 1, 2, 1, "Создать массив",
+                true, true);
+        addArr.setOnClick(() -> {
+            // если числа введены верно
+            if (!nField.hasValidIntValue() || Integer.parseInt(nField.getText())<0) {
+                PanelLog.warning("Длина введена неверно");
+            }
+            else {
+
+                PanelLog.success("Пустой массив создан");
+                array = new int[Integer.parseInt(nField.getText())];
+            }
+        });
+        buttons.add(addArr);
+
         Label inLabel = new Label(window, false, backgroundColor, PANEL_PADDING,
                 6, 7, 0, 2, 1, 1, "Число:", true, true);
         labels.add(inLabel);
+
         Input inField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
                 6, 7, 1, 2, 2, 1, "0", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(inField);
 
+        Label indLabel = new Label(window, false, backgroundColor, PANEL_PADDING,
+                6, 7, 3, 2, 1, 1, "индекс:", true, true);
+        labels.add(indLabel);
+
+        Input indField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
+                6, 7, 4, 2, 2, 1, "0", true,
+                FIELD_TEXT_COLOR, true);
+        inputs.add(indField);
+
         Button addNumber = new Button(
                 window, true, backgroundColor, PANEL_PADDING,
-                6, 7, 0, 3, 3, 1, "Добавить в массив",
+                6, 7, 0, 3, 6, 1, "Добавить в массив",
                 true, true);
         addNumber.setOnClick(() -> {
             // если числа введены верно
-            if (!inField.hasValidIntValue()) {
+            if (array == null){
+                        PanelLog.warning("Массив ещё не создан");
+
+            } else if (!indField.hasValidIntValue() || Integer.parseInt(indField.getText())<0 || Integer.parseInt(indField.getText())> array.length-1) {
+                PanelLog.warning("Индекс введен неверно");
+            }else if (!inField.hasValidIntValue()) {
                 PanelLog.warning("Число введено неверно");
             }
             else {
                 PanelLog.success("Число добавлено к массиву");
-                //PanelOutput.
+                array[Integer.parseInt(indField.getText())] = Integer.parseInt(inField.getText());
             }
         });
         buttons.add(addNumber);
@@ -165,6 +210,10 @@ public class PanelInput extends GridPanel {
         // выводим поля ввода
         for (Label label : labels) {
             label.paint(canvas, windowCS);
+        }
+
+        for (MultiLineLabel multiLineLabel : multiLineLabels) {
+            multiLineLabel.paint(canvas, windowCS);
         }
     }
 }

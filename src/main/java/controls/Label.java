@@ -9,7 +9,7 @@ import misc.CoordinateSystem2i;
 import panels.GridPanel;
 
 import static app.Colors.LABEL_TEXT_COLOR;
-import static app.Fonts.FONT36;
+import static app.Fonts.FONT24;
 
 /**
  * Заголовок
@@ -66,9 +66,9 @@ public class Label extends GridPanel {
         // сохраняем область рисования
         canvas.save();
         // создаём линию
-        try (TextLine line = TextLine.make(text, FONT36)) {
+        try (TextLine line = TextLine.make(text, FONT24)) {
             // получаем высоту текста
-            int capHeight = (int) FONT36.getMetrics().getCapHeight();
+            int capHeight = (int) FONT24.getMetrics().getCapHeight();
             // если нужно центрировать по горизонтали
             if (centered)
                 canvas.translate((windowCS.getSize().x - line.getWidth()) / 2.0f, 0);
