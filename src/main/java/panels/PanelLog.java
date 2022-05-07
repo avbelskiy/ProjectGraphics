@@ -17,7 +17,7 @@ import java.util.List;
 
 import static app.Application.PANEL_PADDING;
 import static app.Colors.PANEL_BACKGROUND_COLOR;
-import static app.Fonts.FONT12;
+import static app.Fonts.FONT18;
 
 /**
  * Панель управления
@@ -175,7 +175,7 @@ public class PanelLog extends GridPanel {
         // создаём перо
         try (Paint paint = new Paint()) {
             // получаем метрики шрифта
-            FontMetrics metrics = FONT12.getMetrics();
+            FontMetrics metrics = FONT18.getMetrics();
             // сохраняем область рисования
             canvas.save();
             // смещаем область рисования
@@ -187,7 +187,7 @@ public class PanelLog extends GridPanel {
                 // задаём цвет лога
                 paint.setColor(getColor(log.recordType));
                 // выводим строку на экран
-                canvas.drawString(log.toString(), 0, 0, FONT12, paint);
+                canvas.drawString(log.toString(), 0, 0, FONT18, paint);
                 // смещаем область к следующей линии
                 canvas.translate(0, -metrics.getCapHeight() - 8);
             }

@@ -1,5 +1,6 @@
 package panels;
 
+import app.Algorithm;
 import controls.Button;
 import controls.Input;
 import controls.InputFactory;
@@ -11,7 +12,9 @@ import misc.Vector2i;
 import controls.MultiLineLabel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import static app.Application.PANEL_PADDING;
 import static app.Colors.*;
@@ -20,11 +23,15 @@ import static app.Colors.*;
  * Панель управления
  */
 public class PanelInput extends GridPanel {
+    public static int[] array = {5, 9, -19, 23, 54, 450, 19, 19, 20, 0, -0, 100};
+
+    public static boolean isArr = false;
     /**
      * Заголовки
      */
     public List<Label> labels;
     public List<MultiLineLabel> multiLineLabels;
+    int i = 0;
     /**
      * Поля ввода
      */
@@ -33,8 +40,6 @@ public class PanelInput extends GridPanel {
      * Кнопки
      */
     public List<Button> buttons;
-
-    public int[] array;
 
     /**
      * Панель управления
@@ -65,69 +70,123 @@ public class PanelInput extends GridPanel {
         // добавление вручную
 
         MultiLineLabel nLabel = new MultiLineLabel(window, false, backgroundColor, PANEL_PADDING,
-                6, 7, 0, 1, 2, 1, "Длина массива:", true,true);
+                6, 7, 0, 0, 2, 1, "Длина массива:", true, true);
         multiLineLabels.add(nLabel);
 
         Input nField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, 7, 2, 1, 2, 1, "1", true,
+                6, 7, 2, 0, 2, 1, "1", true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(nField);
 
         Button addArr = new Button(
                 window, true, backgroundColor, PANEL_PADDING,
-                6, 7, 4, 1, 2, 1, "Создать массив",
+                6, 7, 4, 0, 2, 1, "Создать массив",
                 true, true);
         addArr.setOnClick(() -> {
             // если числа введены верно
-            if (!nField.hasValidIntValue() || Integer.parseInt(nField.getText())<0) {
+            if (!nField.hasValidIntValue() || Integer.parseInt(nField.getText()) < 0) {
                 PanelLog.warning("Длина введена неверно");
-            }
-            else {
+            } else {
 
                 PanelLog.success("Пустой массив создан");
                 array = new int[Integer.parseInt(nField.getText())];
+                isArr = true;
+            }
+            MultiLineLabel arrLabel;
+            if (!isArr) {
+                arrLabel = new MultiLineLabel(window, true, backgroundColor, PANEL_PADDING,
+                        1, 7, 0, 3, 1, 1, "Массив", true, true);
+                multiLineLabels.add(arrLabel);
+
+            } else {
+                arrLabel = new MultiLineLabel(window, true, APP_BACKGROUND_COLOR, PANEL_PADDING,
+                        1, 7, 0, 3, 1, 4, "", true, true);
+                multiLineLabels.add(arrLabel);
+                arrLabel = new MultiLineLabel(window, true, backgroundColor, PANEL_PADDING,
+                        1, 7, 0, 3, 1, 4, Arrays.toString(array), false, false);
+                multiLineLabels.add(arrLabel);
             }
         });
         buttons.add(addArr);
-
         Label inLabel = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, 7, 0, 2, 1, 1, "Число:", true, true);
+                6, 7, 0, 1, 1, 1, "Число:", true, true);
         labels.add(inLabel);
 
         Input inField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, 7, 1, 2, 2, 1, "0", true,
+                6, 7, 1, 1, 2, 1, Integer.toString(i), true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(inField);
 
         Label indLabel = new Label(window, false, backgroundColor, PANEL_PADDING,
-                6, 7, 3, 2, 1, 1, "индекс:", true, true);
+                6, 7, 3, 1, 1, 1, "индекс:", true, true);
         labels.add(indLabel);
 
         Input indField = InputFactory.getInput(window, false, FIELD_BACKGROUND_COLOR, PANEL_PADDING,
-                6, 7, 4, 2, 2, 1, "0", true,
+                6, 7, 4, 1, 2, 1, Integer.toString(i), true,
                 FIELD_TEXT_COLOR, true);
         inputs.add(indField);
 
         Button addNumber = new Button(
                 window, true, backgroundColor, PANEL_PADDING,
-                6, 7, 0, 3, 6, 1, "Добавить в массив",
+                3, 7, 0, 2, 2, 1, "Добавить в массив",
                 true, true);
         addNumber.setOnClick(() -> {
             // если числа введены верно
-            if (array == null){
-                        PanelLog.warning("Массив ещё не создан");
+            if (array == null) {
+                PanelLog.warning("Массив ещё не создан");
 
-            } else if (!indField.hasValidIntValue() || Integer.parseInt(indField.getText())<0 || Integer.parseInt(indField.getText())> array.length-1) {
+            } else if (!indField.hasValidIntValue() || Integer.parseInt(indField.getText()) < 0 || Integer.parseInt(indField.getText()) > array.length - 1) {
                 PanelLog.warning("Индекс введен неверно");
-            }else if (!inField.hasValidIntValue()) {
+            } else if (!inField.hasValidIntValue()) {
                 PanelLog.warning("Число введено неверно");
-            }
-            else {
+            } else {
                 PanelLog.success("Число добавлено к массиву");
                 array[Integer.parseInt(indField.getText())] = Integer.parseInt(inField.getText());
+                i += 1;
+                MultiLineLabel arrLabel;
+                arrLabel = new MultiLineLabel(window, true, APP_BACKGROUND_COLOR, PANEL_PADDING,
+                        1, 7, 0, 3, 1, 4, "", true, true);
+                multiLineLabels.add(arrLabel);
+                arrLabel = new MultiLineLabel(window, true, backgroundColor, PANEL_PADDING,
+                        1, 7, 0, 3, 1, 4, Arrays.toString(array), false, false);
+                multiLineLabels.add(arrLabel);
             }
         });
         buttons.add(addNumber);
+
+        Button randArr = new Button(
+                window, true, backgroundColor, PANEL_PADDING,
+                3, 7, 2, 2, 1, 1, "Рандомный массив",
+                true, true);
+
+        randArr.setOnClick(() -> {
+            for (int i = 0; i < array.length; i++) {
+                Random r = new Random();
+                int rr=r.nextInt(200)-100;
+                array[i] = rr;
+            }
+            MultiLineLabel arrLabel;
+            arrLabel = new MultiLineLabel(window, true, APP_BACKGROUND_COLOR, PANEL_PADDING,
+                    1, 7, 0, 3, 1, 4, "", true, true);
+            multiLineLabels.add(arrLabel);
+            arrLabel = new MultiLineLabel(window, true, backgroundColor, PANEL_PADDING,
+                    1, 7, 0, 3, 1, 4, Arrays.toString(array), false, false);
+            multiLineLabels.add(arrLabel);
+        });
+        buttons.add(randArr);
+
+
+        MultiLineLabel arrLabel;
+        if (!isArr) {
+            arrLabel = new MultiLineLabel(window, true, backgroundColor, PANEL_PADDING,
+                    1, 7, 0, 3, 1, 1, "массив", true, true);
+            System.out.println("0");
+        } else {
+            arrLabel = new MultiLineLabel(window, true, 0xFF00000, PANEL_PADDING,
+                    1, 7, 0, 3, 1, 4, Arrays.toString(array), false, false);
+            System.out.println("1");
+        }
+        multiLineLabels.add(arrLabel);
     }
 
     /**
@@ -207,7 +266,7 @@ public class PanelInput extends GridPanel {
         for (Input input : inputs) {
             input.paint(canvas, windowCS);
         }
-        // выводим поля ввода
+        // выводим поля вывода
         for (Label label : labels) {
             label.paint(canvas, windowCS);
         }
