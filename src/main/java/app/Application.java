@@ -7,6 +7,7 @@ import io.github.humbleui.jwm.skija.EventFrameSkija;
 import io.github.humbleui.skija.Canvas;
 import io.github.humbleui.skija.Surface;
 import misc.CoordinateSystem2i;
+import panels.PanelInfo;
 import panels.PanelInput;
 import panels.PanelLog;
 import panels.PanelOutput;
@@ -22,6 +23,11 @@ import static app.Colors.*;
  * Класс окна приложения
  */
 public class Application implements Consumer<Event> {
+
+    public enum Mode {
+        WORK,
+        INFO
+    }
     /**
      * окно приложения
      */
@@ -29,7 +35,8 @@ public class Application implements Consumer<Event> {
     /**
      * отступ приложения
      */
-    public static final int PANEL_PADDING = 5;
+    public static final int PANEL_PADDING = 10;
+
     /**
      * радиус скругления элементов
      */
@@ -41,6 +48,10 @@ public class Application implements Consumer<Event> {
     private final PanelOutput panelOutput;
     private final PanelLog panelLog;
     private final Label label;
+    private final PanelInfo panelInfo;
+
+    public static Mode currentMode = Mode.WORK;
+
     /**
      * время последнего нажатия клавиши мыши
      */
@@ -70,6 +81,7 @@ public class Application implements Consumer<Event> {
                 window, true, PANEL_BACKGROUND_COLOR, PANEL_PADDING, 2, 7, 0, 6,
                 1, 1
         );
+        panelInfo = new PanelInfo(window, true, APP_BACKGROUND_COLOR, PANEL_PADDING);
 
         // задаём обработчиком событий текущий объект
         window.setEventListener(this);
@@ -116,7 +128,6 @@ public class Application implements Consumer<Event> {
      */
     @Override
     public void accept(Event e) {
-
         // если событие кнопка мыши
         if (e instanceof EventMouseButton) {
             // получаем текущие дату и время
@@ -131,21 +142,47 @@ public class Application implements Consumer<Event> {
             // сохраняем время последнего события
             prevEventMouseButtonTime = now;
         }
-
+        // кнопки клавиатуры
+        else if (e instanceof EventKey eventKey) {
+            // кнопка нажата с Ctrl
+            if (eventKey.isPressed()) {
+                switch (eventKey.getKey()) {
+                    case ESCAPE -> {
+                        if (currentMode.equals(Mode.WORK)) {
+                            window.close();
+                            // завершаем обработку, иначе уже разрушенный контекст
+                            // будет передан панелям
+                            return;
+                        }
+                    }
+                    case TAB -> InputFactory.nextTab();
+                }
+            }
+        }
         // если событие - это закрытие окна
-        if (e instanceof EventWindowClose) {
+        else if (e instanceof EventWindowClose) {
             // завершаем работу приложения
             App.terminate();
+            // закрытие окна
         } else if (e instanceof EventWindowCloseRequest) {
             window.close();
         } else if (e instanceof EventFrameSkija ee) {
             Surface s = ee.getSurface();
             paint(s.getCanvas(), new CoordinateSystem2i(0, 0, s.getWidth(), s.getHeight())
             );
+        } else if (e instanceof EventFrame) {
+            // запускаем рисование кадра
+            window.requestFrame();
         }
 
-        panelInput.accept(e);
-        panelOutput.accept(e);
+        switch (currentMode) {
+            case INFO -> panelInfo.accept(e);
+            case WORK -> {
+                // передаём события на обработку панелям
+                panelOutput.accept(e);
+                panelInput.accept(e);
+            }
+        }
     }
 
     /**
@@ -165,5 +202,9 @@ public class Application implements Consumer<Event> {
         panelLog.paint(canvas, windowCS);
         label.paint(canvas, windowCS);
         canvas.restore();
+
+        if (currentMode == Mode.INFO) {
+            panelInfo.paint(canvas, windowCS);
+        }
     }
 }

@@ -1,8 +1,5 @@
 package app;
 
-import panels.PanelInput;
-
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -11,7 +8,7 @@ import static panels.PanelInput.array;
 public class Algorithm {
     int number_alg;
 
-    public static int[] bubble_sort (int[] array) {
+    public static void bubble_sort (int[] array) {
         boolean isSorted = false;
         int buf;
         while (!isSorted) {
@@ -25,10 +22,9 @@ public class Algorithm {
                 }
             }
         }
-        return array;
     }
 
-    public static int[] choose_sort (int [] array) {
+    public static void choose_sort (int [] array) {
         for (int min = 0; min < array.length - 1; min++) {
             int least = min;
             for (int j = min + 1; j < array.length; j++) {
@@ -40,10 +36,9 @@ public class Algorithm {
             array[min] = array[least];
             array[least] = buf;
         }
-        return array;
     }
 
-    public static int[] paste_sort (int [] array) {
+    public static void paste_sort (int [] array) {
         for (int i = 1; i < array.length; i++) {
             int current = array[i];
             int j = i - 1;
@@ -53,10 +48,9 @@ public class Algorithm {
             }
             array[j + 1] = current;
         }
-        return array;
     }
 
-    public static int[] shuttle_sort (int [] array) {
+    public static void shuttle_sort (int [] array) {
         int left = 0;
         int right = array.length - 1;
         do {
@@ -77,10 +71,9 @@ public class Algorithm {
             }
             left++;
         } while (left <= right);
-        return array;
     }
 
-    public static int[] shell_sort (int [] array) {
+    public static void shell_sort (int [] array) {
         int gap = array.length / 2;
         while (gap >= 1) {
             for (int rightt = 0; rightt < array.length; rightt++) {
@@ -94,15 +87,14 @@ public class Algorithm {
             }
             gap = gap / 2;
         }
-        return array;
     }
 
-    public static int[] quickSort(int[] array, int low, int high) {
+    public static void quickSort(int[] array, int low, int high) {
         if (array.length == 0)
-            return array;
+            return;
 
         if (low >= high)
-            return null;
+            return;
 
         int middle = low + (high - low) / 2;
         int opora = array[middle];
@@ -131,10 +123,9 @@ public class Algorithm {
 
         if (high > i)
             quickSort(array, i, high);
-        return array;
     }
 
-    public static int[] swap_sort (int [] array) {
+    public static void swap_sort (int [] array) {
         int left = 0; // левая граница
         int right = array.length - 1; // правая граница
 
@@ -163,44 +154,9 @@ public class Algorithm {
             }
             left++; // увеличиваем левую границу
         } while (left <= right);
-        return array;
     }
 
-    public static int[] bucketSort(int[] arr) {
-        int n = arr.length;
-        if (n <= 0)
-            return null;
-
-        // 1) Create n empty buckets
-        @SuppressWarnings("unchecked")
-        Vector<Integer>[] buckets = new Vector[n];
-
-        for (int i = 0; i < n; i++) {
-            buckets[i] = new Vector<Integer>();
-        }
-
-        // 2) Put array elements in different buckets
-        for (int i = 0; i < n; i++) {
-            float idx = arr[i] * n;
-            buckets[(int)idx].add(arr[i]);
-        }
-
-        // 3) Sort individual buckets
-        for (int i = 0; i < n; i++) {
-            Collections.sort(buckets[i]);
-        }
-
-        // 4) Concatenate all buckets into arr[]
-        int index = 0;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < buckets[i].size(); j++) {
-                arr[index++] = buckets[i].get(j);
-            }
-        }
-        return arr;
-    }
-
-    public static int[] count_sort( int[] array) {
+    public static void count_sort(int[] array) {
         int min = Integer.MAX_VALUE;
         int max = Integer.MIN_VALUE;
         for (int element : array)
@@ -227,7 +183,6 @@ public class Algorithm {
                 array[arrayIndex++] = i + min;
             }
         }
-        return array;
     }
 
     void sort_array() {
@@ -246,9 +201,7 @@ public class Algorithm {
                     quickSort(array, 0, array.length - 1);
             case (7) ->   //метод перемешивания
                     swap_sort(array);
-            case (8) ->   //метод блоков (не работает)
-                    bucketSort(array);
-            case (9) ->   //метод подсчета
+            case (8) ->   //метод подсчета
                     count_sort(array);
             default -> {
             }

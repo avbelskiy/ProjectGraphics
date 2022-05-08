@@ -79,7 +79,7 @@ public class PanelInput extends GridPanel {
         inputs.add(nField);
 
         Button addArr = new Button(
-                window, true, backgroundColor, PANEL_PADDING,
+                window, true, BUTTON_COLOR, PANEL_PADDING,
                 6, 7, 4, 0, 2, 1, "Создать массив",
                 true, true);
         addArr.setOnClick(() -> {
@@ -127,7 +127,7 @@ public class PanelInput extends GridPanel {
         inputs.add(indField);
 
         Button addNumber = new Button(
-                window, true, backgroundColor, PANEL_PADDING,
+                window, true, BUTTON_COLOR, PANEL_PADDING,
                 3, 7, 0, 2, 2, 1, "Добавить в массив",
                 true, true);
         addNumber.setOnClick(() -> {
@@ -155,7 +155,7 @@ public class PanelInput extends GridPanel {
         buttons.add(addNumber);
 
         Button randArr = new Button(
-                window, true, backgroundColor, PANEL_PADDING,
+                window, true, BUTTON_COLOR, PANEL_PADDING,
                 3, 7, 2, 2, 1, 1, "Случайный массив",
                 true, true);
 

@@ -13,8 +13,6 @@ public class Colors {
 
     public static final int LABEL_TEXT_COLOR = Misc.getColor(100, 0, 0, 0);
 
-    public static final int MULTILINE_TEXT_COLOR = Misc.getColor(64, 255, 255, 255);
-
     public static final int PANEL_BACKGROUND_COLOR = Misc.getColor(50, 0, 0, 0);
 
     public static final int FIELD_BACKGROUND_COLOR = Misc.getColor(255, 255, 255, 255);
