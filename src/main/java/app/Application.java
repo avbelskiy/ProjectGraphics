@@ -145,7 +145,7 @@ public class Application implements Consumer<Event> {
         }
 
         panelInput.accept(e);
-
+        panelOutput.accept(e);
     }
 
     /**

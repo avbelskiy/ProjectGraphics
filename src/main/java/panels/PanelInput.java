@@ -1,6 +1,5 @@
 package panels;
 
-import app.Algorithm;
 import controls.Button;
 import controls.Input;
 import controls.InputFactory;
@@ -23,7 +22,8 @@ import static app.Colors.*;
  * Панель управления
  */
 public class PanelInput extends GridPanel {
-    public static int[] array = {5, 9, -19, 23, 54, 450, 19, 19, 20, 0, -0, 100};
+    //public static int[] array = {5, 9, -19, 23, 54, 450, 19, 19, 20, 0, -0, 100};
+    public static int[] array;
 
     public static boolean isArr = false;
     /**
@@ -156,37 +156,29 @@ public class PanelInput extends GridPanel {
 
         Button randArr = new Button(
                 window, true, backgroundColor, PANEL_PADDING,
-                3, 7, 2, 2, 1, 1, "Рандомный массив",
+                3, 7, 2, 2, 1, 1, "Случайный массив",
                 true, true);
 
         randArr.setOnClick(() -> {
-            for (int i = 0; i < array.length; i++) {
-                Random r = new Random();
-                int rr=r.nextInt(200)-100;
-                array[i] = rr;
+            if (array == null) {
+                PanelLog.warning("Массив ещё не создан");
+            } else {
+                PanelLog.success("Случайный массив задан");
+                for (int i = 0; i < array.length; i++) {
+                    Random r = new Random();
+                    int rr = r.nextInt(200) - 100;
+                    array[i] = rr;
+                }
+                MultiLineLabel arrLabel;
+                arrLabel = new MultiLineLabel(window, true, APP_BACKGROUND_COLOR, PANEL_PADDING,
+                        1, 7, 0, 3, 1, 4, "", true, true);
+                multiLineLabels.add(arrLabel);
+                arrLabel = new MultiLineLabel(window, true, backgroundColor, PANEL_PADDING,
+                        1, 7, 0, 3, 1, 4, Arrays.toString(array), false, false);
+                multiLineLabels.add(arrLabel);
             }
-            MultiLineLabel arrLabel;
-            arrLabel = new MultiLineLabel(window, true, APP_BACKGROUND_COLOR, PANEL_PADDING,
-                    1, 7, 0, 3, 1, 4, "", true, true);
-            multiLineLabels.add(arrLabel);
-            arrLabel = new MultiLineLabel(window, true, backgroundColor, PANEL_PADDING,
-                    1, 7, 0, 3, 1, 4, Arrays.toString(array), false, false);
-            multiLineLabels.add(arrLabel);
         });
         buttons.add(randArr);
-
-
-        MultiLineLabel arrLabel;
-        if (!isArr) {
-            arrLabel = new MultiLineLabel(window, true, backgroundColor, PANEL_PADDING,
-                    1, 7, 0, 3, 1, 1, "массив", true, true);
-            System.out.println("0");
-        } else {
-            arrLabel = new MultiLineLabel(window, true, 0xFF00000, PANEL_PADDING,
-                    1, 7, 0, 3, 1, 4, Arrays.toString(array), false, false);
-            System.out.println("1");
-        }
-        multiLineLabels.add(arrLabel);
     }
 
     /**
